@@ -7,8 +7,11 @@ import type { ConfigProviderProps } from "@orderly.network/hooks";
  * based on runtime configuration.
  *
  * Format: Comma-separated list of full symbol names (e.g., "PERP_BTC_USDC,PERP_ETH_USDC")
- * - Only symbols in the list will be included
- * - If empty, all symbols are returned
+ * - If VITE_SYMBOL_LIST is specified, only those symbols will be included
+ * - Otherwise, shows ALL available perpetual pairs (since Solana wallet can trade any perp)
+ *
+ * Note: This is a Solana-only DEX in terms of WALLET support, not perpetual contracts.
+ * Users with Solana wallets can trade all available perpetuals (BTC, ETH, SOL, etc.)
  */
 export function createSymbolDataAdapter(): NonNullable<
   ConfigProviderProps["dataAdapter"]
@@ -17,12 +20,15 @@ export function createSymbolDataAdapter(): NonNullable<
 
   return {
     symbolList: (original: API.MarketInfoExt[]) => {
-      if (symbolList.length === 0) {
-        return original;
+      // If custom symbol list is provided, use it
+      if (symbolList.length > 0) {
+        const symbolSet = new Set(symbolList);
+        return original.filter((item) => symbolSet.has(item.symbol));
       }
 
-      const symbolSet = new Set(symbolList);
-      return original.filter((item) => symbolSet.has(item.symbol));
+      // Otherwise, show all available perpetual pairs
+      // Users can trade any perpetual using their Solana wallet
+      return original;
     },
   };
 }

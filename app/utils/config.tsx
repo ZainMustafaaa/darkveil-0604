@@ -260,7 +260,7 @@ export const useOrderlyConfig = () => {
             {components.scanQRCode}
             {components.languageSwitcher}
             {components.subAccount}
-            {components.chainMenu}
+            {/* Chain menu hidden - Solana only */}
             {components.walletConnect}
           </Flex>
         </Flex>

@@ -78,33 +78,9 @@ const OrderlyProvider = (props: { children: ReactNode }) => {
 	const privyAppId = getRuntimeConfig('VITE_PRIVY_APP_ID');
 	const usePrivy = !!privyAppId;
 
-	const parseChainIds = (envVar: string | undefined): Array<{id: number}> | undefined => {
-		if (!envVar) return undefined;
-		return envVar.split(',')
-			.map(id => id.trim())
-			.filter(id => id)
-			.map(id => ({ id: parseInt(id, 10) }))
-			.filter(chain => !isNaN(chain.id));
-	};
-
-	const parseDefaultChain = (envVar: string | undefined): { mainnet: { id: number } } | undefined => {
-		if (!envVar) return undefined;
-		
-		const chainId = parseInt(envVar.trim(), 10);
-		return !isNaN(chainId) ? { mainnet: { id: chainId } } : undefined;
-	};
-
-	const disableMainnet = getRuntimeConfigBoolean('VITE_DISABLE_MAINNET');
-	const mainnetChains = disableMainnet ? [] : parseChainIds(getRuntimeConfig('VITE_ORDERLY_MAINNET_CHAINS'));
-	const disableTestnet = getRuntimeConfigBoolean('VITE_DISABLE_TESTNET');
-	const testnetChains = disableTestnet ? [] : parseChainIds(getRuntimeConfig('VITE_ORDERLY_TESTNET_CHAINS'));
-
-	const chainFilter = (mainnetChains || testnetChains) ? {
-		...(mainnetChains && { mainnet: mainnetChains }),
-		...(testnetChains && { testnet: testnetChains })
-	} : undefined;
-
-	const defaultChain = parseDefaultChain(getRuntimeConfig('VITE_DEFAULT_CHAIN'));
+	// No EVM chain configuration needed for Solana-only setup
+	const chainFilter = undefined;
+	const defaultChain = undefined;
 
 	const dataAdapter = createSymbolDataAdapter();
 
@@ -171,14 +147,11 @@ const OrderlyProvider = (props: { children: ReactNode }) => {
 
 	const appProvider = (
 		<OrderlyAppProvider
-			brokerId={getRuntimeConfig('VITE_ORDERLY_BROKER_ID')}
-			brokerName={getRuntimeConfig('VITE_ORDERLY_BROKER_NAME')}
+			brokerId={getRuntimeConfig('VITE_ORDERLY_BROKER_ID') || 'demo'}
+			brokerName={getRuntimeConfig('VITE_ORDERLY_BROKER_NAME') || 'DarkVeil'}
 			networkId={networkId}
 			onChainChanged={onChainChanged}
 			appIcons={config.orderlyAppProvider.appIcons}
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			{...(chainFilter && { chainFilter } as any)}
-			defaultChain={defaultChain}
 			dataAdapter={dataAdapter}
 		>
 			<DemoGraduationChecker />

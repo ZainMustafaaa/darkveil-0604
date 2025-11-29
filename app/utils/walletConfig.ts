@@ -1,5 +1,3 @@
-import { CreateConnectorFn } from "wagmi";
-import { injected, walletConnect } from "wagmi/connectors";
 import {
   Adapter,
   WalletError,
@@ -17,37 +15,6 @@ import {
   SolanaMobileWalletAdapter,
 } from "@solana-mobile/wallet-adapter-mobile";
 import type { NetworkId } from "@orderly.network/types";
-import injectedOnboard from "@web3-onboard/injected-wallets";
-import { getRuntimeConfig } from "./runtime-config";
-import walletConnectOnboard from "@web3-onboard/walletconnect";
-import binanceWallet from "@binance/w3w-blocknative-connector";
-
-export const getEvmConnectors = (): CreateConnectorFn[] => {
-  const walletConnectProjectId = getRuntimeConfig(
-    "VITE_WALLETCONNECT_PROJECT_ID"
-  );
-  const isBrowser = typeof window !== "undefined";
-
-  const connectors: CreateConnectorFn[] = [injected()];
-
-  if (walletConnectProjectId && isBrowser) {
-    connectors.push(
-      walletConnect({
-        projectId: walletConnectProjectId,
-        showQrModal: true,
-        metadata: {
-          name: getRuntimeConfig("VITE_APP_NAME") || "Orderly App",
-          description:
-            getRuntimeConfig("VITE_APP_DESCRIPTION") || "Orderly Application",
-          url: window.location.origin,
-          icons: [`${window.location.origin}/favicon.webp`],
-        },
-      })
-    );
-  }
-
-  return connectors;
-};
 
 export const getSolanaWallets = (networkId: NetworkId) => {
   const isBrowser = typeof window !== "undefined";
@@ -85,43 +52,4 @@ export const getSolanaConfig = (networkId: NetworkId) => {
       console.log("-- error", error, adapter);
     },
   };
-};
-
-export const getOnboardEvmWallets = () => {
-  const walletConnectProjectId = getRuntimeConfig(
-    "VITE_WALLETCONNECT_PROJECT_ID"
-  );
-  const isBrowser = typeof window !== "undefined";
-
-  if (!walletConnectProjectId || !isBrowser) {
-    return [];
-  }
-
-  return [
-    injectedOnboard(),
-    binanceWallet({ options: { lng: "en" } }),
-    walletConnectOnboard({
-      projectId: walletConnectProjectId,
-      qrModalOptions: {
-        themeMode: "dark",
-      },
-      dappUrl: window.location.origin,
-    }),
-  ];
-};
-
-export const getEvmInitialConfig = () => {
-  const wallets = getOnboardEvmWallets();
-
-  return wallets.length > 0
-    ? {
-        options: {
-          wallets,
-          appMetadata: {
-            name: getRuntimeConfig("VITE_ORDERLY_BROKER_NAME"),
-            description: getRuntimeConfig("VITE_ORDERLY_BROKER_NAME"),
-          },
-        },
-      }
-    : undefined;
 };
