@@ -23,10 +23,10 @@ export default function PerpSymbol() {
     (data: API.Symbol) => {
       const symbol = data.symbol;
       setSymbol(symbol);
-      
+
       const searchParamsString = searchParams.toString();
-      const queryString = searchParamsString ? `?${searchParamsString}` : '';
-      
+      const queryString = searchParamsString ? `?${searchParamsString}` : "";
+
       navigate(`/perp/${symbol}${queryString}`);
     },
     [navigate, searchParams]
@@ -47,4 +47,3 @@ export default function PerpSymbol() {
     </>
   );
 }
-
