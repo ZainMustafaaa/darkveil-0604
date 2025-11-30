@@ -9,22 +9,24 @@ import {
 } from "@orderly.network/ui";
 import { LeftNavProps, LeftNavItem } from "@orderly.network/ui-scaffold";
 import { ExternalLink } from "lucide-react";
-import { getRuntimeConfig, getRuntimeConfigBoolean } from "@/utils/runtime-config";
+import {
+  getRuntimeConfig,
+  getRuntimeConfigBoolean,
+} from "@/utils/runtime-config";
 import { withBasePath } from "@/utils/base-path";
 
-type LeftNavUIProps = LeftNavProps &
-  {
-    className?: string;
-    logo?: {
-      src: string;
-      alt: string;
-    };
-    externalLinks?: Array<{
-      name: string;
-      href: string;
-      target?: string;
-    }>;
+type LeftNavUIProps = LeftNavProps & {
+  className?: string;
+  logo?: {
+    src: string;
+    alt: string;
   };
+  externalLinks?: Array<{
+    name: string;
+    href: string;
+    target?: string;
+  }>;
+};
 
 const LeftNavUI: FC<LeftNavUIProps> = (props) => {
   const showModal = useCallback(() => {
@@ -61,13 +63,19 @@ const LeftNavSheet = modal.create<LeftNavUIProps>((props) => {
       >
         <div className="oui-relative oui-flex oui-h-full oui-flex-col oui-gap-3">
           <div className="oui-mt-[6px] oui-flex oui-h-[44px] oui-items-center">
-            {
-              getRuntimeConfigBoolean('VITE_HAS_PRIMARY_LOGO')
-                ? <img src={withBasePath("/logo.webp")} alt="logo" className="oui-h-[32px]" />
-                : <h1 className="oui-text-base-contrast-80 oui-font-bold">{getRuntimeConfig('VITE_ORDERLY_BROKER_NAME')}</h1>
-            }
+            {getRuntimeConfigBoolean("VITE_HAS_PRIMARY_LOGO") ? (
+              <img
+                src={withBasePath("/logo.webp")}
+                alt="logo"
+                className="oui-h-[32px]"
+              />
+            ) : (
+              <h1 className="oui-text-base-contrast oui-font-bold">
+                {getRuntimeConfig("VITE_ORDERLY_BROKER_NAME")}
+              </h1>
+            )}
           </div>
-          
+
           <div className="oui-flex oui-h-[calc(100vh-120px)] oui-flex-col oui-items-start oui-overflow-y-auto">
             {Array.isArray(props?.menus) && props.menus.length > 0 && (
               <>
@@ -80,18 +88,19 @@ const LeftNavSheet = modal.create<LeftNavUIProps>((props) => {
                 ))}
               </>
             )}
-            
-            {Array.isArray(props?.externalLinks) && props.externalLinks.length > 0 && (
-              <>
-                <div className="oui-w-full oui-border-t oui-border-line-12 oui-my-2 oui-bg-base-3"></div>
-                {props.externalLinks?.map((item) => (
-                  <ExternalNavItem
-                    item={item}
-                    key={`external-${item.name}`}
-                  />
-                ))}
-              </>
-            )}
+
+            {Array.isArray(props?.externalLinks) &&
+              props.externalLinks.length > 0 && (
+                <>
+                  <div className="oui-w-full oui-border-t oui-border-line-12 oui-my-2 oui-bg-base-3"></div>
+                  {props.externalLinks?.map((item) => (
+                    <ExternalNavItem
+                      item={item}
+                      key={`external-${item.name}`}
+                    />
+                  ))}
+                </>
+              )}
           </div>
         </div>
       </SheetContent>
@@ -110,10 +119,10 @@ const NavItem: FC<NavItemProps> = ({ item, onLinkClick }) => {
     <Link
       to={href}
       onClick={onLinkClick}
-      className="oui-flex oui-items-center oui-px-3 oui-py-4 oui-w-full hover:oui-bg-base-7 oui-no-underline"
+      className="oui-flex oui-items-center oui-px-3 oui-py-4 oui-w-full hover:oui-bg-base-8 oui-no-underline"
     >
       <div>{icon}</div>
-      <div className="oui-text-base oui-font-semibold oui-text-base-contrast-80">
+      <div className="oui-text-base oui-font-semibold oui-text-base-contrast">
         {name}
       </div>
       {trailing}
@@ -137,7 +146,7 @@ const ExternalNavItem: FC<ExternalNavItemProps> = ({ item }) => {
       rel="noopener noreferrer"
       className="oui-flex oui-items-center oui-justify-between oui-px-3 oui-py-4 oui-w-full hover:oui-bg-base-7 oui-no-underline"
     >
-      <div className="oui-text-base oui-font-semibold oui-text-base-contrast-80">
+      <div className="oui-text-base oui-font-semibold oui-text-base-contrast">
         {item.name}
       </div>
       <ExternalLink className="oui-w-4 oui-h-4 oui-text-base-contrast-54 oui-flex-shrink-0" />

@@ -1,33 +1,33 @@
 :root {
   /* Font Family - keeping Inter for that technical financial look */
-  --oui-font-family: 'Inter', sans-serif;
+  --oui-font-family: "Inter", sans-serif;
   --oui-font-size-base: 14px;
 
   /* --- PRIMARY ACTION BUTTONS (UPDATED to WHITE) --- */
   /* This controls the "Connect Wallet" and active "Buy" tabs */
-  --oui-color-primary: 255 255 255; 
+  --oui-color-primary: 255 255 255;
   --oui-color-primary-light: 240 240 240;
   --oui-color-primary-darken: 200 200 200;
   /* Important: Text on white buttons must be black */
-  --oui-color-primary-contrast: 0 0 0; 
+  --oui-color-primary-contrast: 0 0 0;
 
   /* Links */
   --oui-color-link: 255 255 255;
   --oui-color-link-light: 235 60 60; /* Hover Red */
 
   /* --- MARKET COLORS (Charts & Trades) --- */
-  
+
   /* SHORT / SELL (Red) */
-  --oui-color-danger: 235 60 60; 
-  --oui-color-danger-light: 255 90 90;
-  --oui-color-danger-darken: 180 20 20;
+  --oui-color-danger: 203 47 47 !important;
+  --oui-color-danger-light: 203 47 47; /* optional: or 255 110 110 if you want a lighter version */
+  --oui-color-danger-darken: 140 30 30; /* optional: darker version */
   --oui-color-danger-contrast: 255 255 255;
 
-  /* LONG / BUY (Teal Green - match Solana/Ordering) */
-  --oui-color-success: 20 241 149; 
-  --oui-color-success-light: 100 255 200;
-  --oui-color-success-darken: 0 160 100;
-  --oui-color-success-contrast: 0 0 0;
+  /* LONG / BUY (Teal Green - match design) */
+  --oui-color-success: 43 212 202 !important;
+  --oui-color-success-light: 43 212 202; /* optional lighter */
+  --oui-color-success-darken: 20 160 150; /* optional darker */
+  --oui-color-success-contrast: 0 0 0; /* black is normal */
 
   /* Warning */
   --oui-color-warning: 255 209 70;
@@ -36,11 +36,11 @@
   --oui-color-warning-contrast: 0 0 0;
 
   /* --- BACKGROUNDS (Deep Dark Theme) --- */
-  
+
   /* Main Background: Deep Blue-Black */
-  --oui-color-fill: 5 7 10; 
+  --oui-color-fill: 5 7 10;
   /* Hover/Active states for rows/lists */
-  --oui-color-fill-active: 20 24 30; 
+  --oui-color-fill-active: 20 24 30;
 
   /* Grey Scale for text and borders */
   --oui-color-base-1: 160 165 175; /* Primary Text */
@@ -48,25 +48,26 @@
   --oui-color-base-3: 100 105 115;
   --oui-color-base-4: 70 75 85;
   --oui-color-base-5: 50 55 65;
-  --oui-color-base-6: 40 44 50;
-  --oui-color-base-7: 30 34 40;  /* Input Fields */
-  --oui-color-base-8: 20 22 28;  /* Module Backgrounds */
-  --oui-color-base-9: 12 14 18;  /* Darker Module Backgrounds */
-  --oui-color-base-10: 5 7 10;   /* App Background */
+  --oui-color-base-6: 20 22 28;
+  --oui-color-base-7: 30 34 40; /* Input Fields */
+  --oui-color-base-8: 20 22 28; /* Module Backgrounds */
+  --oui-color-base-9: 11 13 16; /* Darker Module Backgrounds */
+  --oui-color-base-10: 5 7 10; /* App Background */
 
   --oui-color-base-foreground: 255 255 255;
-  
+
   /* Borders */
-  --oui-color-line: 35 38 45; 
+  --oui-color-line: 35 38 45;
 
   /* Trading PnL */
-  --oui-color-trading-loss: 235 60 60;
+  --oui-color-trading-loss: 203 47 47;
   --oui-color-trading-loss-contrast: 255 255 255;
-  --oui-color-trading-profit: 20 241 149;
+
+  --oui-color-trading-profit: 43 212 202;
   --oui-color-trading-profit-contrast: 0 0 0;
 
   /* --- GRADIENTS (Neutralized to match flat style) --- */
-  
+
   /* Primary Gradient - subtle white/grey shift for buttons */
   --oui-gradient-primary-start: 255 255 255;
   --oui-gradient-primary-end: 220 220 220;
@@ -114,7 +115,8 @@
 }
 
 /* Ensure the body takes the deepest dark color */
-html, body {
+html,
+body {
   background-color: rgb(var(--oui-color-base-10));
   color: rgb(var(--oui-color-base-foreground));
   font-family: var(--oui-font-family) !important;
