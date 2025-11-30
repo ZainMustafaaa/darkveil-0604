@@ -25,7 +25,7 @@ export default function WooFiWidget() {
 
   return (
     <WooFiSwapWidgetReact
-      evmProvider={wallet?.provider}
+      // evmProvider={wallet?.provider}
       currentChain={connectedChain?.id}
       onConnectWallet={handleConnectWallet}
       onChainSwitch={handleChainSwitch}
@@ -35,7 +35,9 @@ export default function WooFiWidget() {
         enableMerlin: false,
         enableHyperevm: false,
         enableZksync: false,
+        enableSolana: true,
       }}
+
     />
   );
 }

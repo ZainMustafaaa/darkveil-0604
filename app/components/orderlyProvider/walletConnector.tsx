@@ -15,6 +15,9 @@ const WalletConnector = ({ children, networkId }: WalletConnectorProps) => {
     wallets: getSolanaWallets(networkId),
   };
 
+  // By setting evmInitial to undefined, we completely disable EVM wallet support
+  // The Orderly SDK will only initialize Solana wallets
+  // Combined with our CSS/JS hiding, this ensures no EVM wallets appear
   return (
     <WalletConnectorProvider
       solanaInitial={solanaInitial}

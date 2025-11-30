@@ -145,9 +145,64 @@ const router = createBrowserRouter([
   },
 ], { basename: basePath });
 
+// Function to aggressively hide EVM wallets
+function hideEVMWalletsAggressively() {
+  const evmWalletNames = [
+    'MetaMask', 'Rabby Wallet', 'Rabby', 'Coinbase Wallet', 'Coinbase',
+    'Binance', 'Keplr', 'Core', 'WalletConnect', 'Trust', 'Rainbow',
+    'Safe', 'Ethereum', 'EVM'
+  ];
+
+  const evmChainNames = [
+    'Arbitrum', 'Optimism', 'Base', 'Mantle', 'Sei Network',
+    'Morph', 'Sonic', 'Berachain', 'Story', 'Mode',
+    'Plume', 'Abstract', 'BNB Chain', 'Monad', 'Avalanche'
+  ];
+
+  // Hide all buttons that match EVM wallets or chains
+  const allButtons = document.querySelectorAll('button, div[role="button"], a');
+  allButtons.forEach((element) => {
+    const text = element.textContent || '';
+
+    const isEVMWallet = evmWalletNames.some(name => text.includes(name));
+    const isEVMChain = evmChainNames.some(name => text.includes(name));
+
+    if (isEVMWallet || isEVMChain) {
+      (element as HTMLElement).style.display = 'none !important';
+      (element as HTMLElement).style.visibility = 'hidden';
+      (element as HTMLElement).style.height = '0';
+      (element as HTMLElement).style.width = '0';
+      (element as HTMLElement).style.overflow = 'hidden';
+
+      // Also hide parent containers
+      let parent = element.parentElement;
+      while (parent && parent !== document.body) {
+        const classes = parent.className || '';
+        if (classes.includes('wallet') || classes.includes('button') || classes.includes('item')) {
+          (parent as HTMLElement).style.display = 'none !important';
+          break;
+        }
+        parent = parent.parentElement;
+      }
+    }
+  });
+
+  // Hide "Switch Network" modals
+  const dialogs = document.querySelectorAll('[role="dialog"]');
+  dialogs.forEach((dialog) => {
+    if (dialog.textContent && dialog.textContent.includes('Switch Network')) {
+      (dialog as HTMLElement).style.display = 'none !important';
+      const overlay = dialog.parentElement;
+      if (overlay) {
+        (overlay as HTMLElement).style.display = 'none !important';
+      }
+    }
+  });
+}
+
 loadRuntimeConfig().then(() => {
   loadAnalytics();
-  
+
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
       <HelmetProvider>
@@ -155,6 +210,24 @@ loadRuntimeConfig().then(() => {
       </HelmetProvider>
     </React.StrictMode>
   );
+
+  // Start hiding EVM wallets aggressively
+  setTimeout(() => {
+    hideEVMWalletsAggressively();
+
+    // Run repeatedly to catch dynamically loaded content
+    setInterval(hideEVMWalletsAggressively, 100);
+
+    // Also watch for DOM changes
+    const observer = new MutationObserver(() => {
+      hideEVMWalletsAggressively();
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }, 100);
 });
 
 if ('serviceWorker' in navigator) {
